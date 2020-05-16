@@ -1,0 +1,12 @@
+{{ define "category-list" }}
+    <ul>
+        {{ range .Files }}
+            <li>
+                <a href="/post?file={{ .Path }}">{{ .Name }}</a>
+                {{ if .IsCatalog}}
+                    {{ template "category-list" . }}
+                {{ end }}
+            </li>
+        {{ end }}
+    </ul>
+{{ end }}

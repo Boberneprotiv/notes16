@@ -1,0 +1,22 @@
+{{ define "post" }}
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+        <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    </head>
+    <body>
+    <a href="/">Back to Catalog</a>
+    <form method="post" action="post">
+        <button type="submit">Save changes</button>
+        <input type="hidden" name="path" value="{{ .Path }}">
+        <textarea id="editor" name="content" style="width: 100%; height: 500px">{{ .Content }}</textarea>
+    </form>
+    <script>
+        var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
+    </script>
+    </body>
+    </html>
+{{ end }}
