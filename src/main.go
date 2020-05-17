@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	siteFolder = "XXX"
+	siteFolder = "/Users/vladimirborodin/Documents/Avtodoctor/HugoSite"
 	site, _    = content.NewSite(siteFolder)
 	templates  = template.Must(template.ParseFiles("templates/index.html", "templates/post.html", "templates/category-list.html"))
 )

@@ -8,10 +8,14 @@
         <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
     </head>
     <body>
-    <a href="/">Back to Catalog</a>
+    <p><a href="/">Back to Catalog</a></p>
     <form method="post" action="post">
         <button type="submit">Save changes</button>
         <input type="hidden" name="path" value="{{ .Path }}">
+        <div>
+            <input style="width: 100%" type="text" name="title" value="{{ .Title }}" />
+        </div>
+        <textarea name="description" style="width: 100%; height: 200px">{{ .Description }}</textarea>
         <textarea id="editor" name="content" style="width: 100%; height: 500px">{{ .Content }}</textarea>
     </form>
     <script>
