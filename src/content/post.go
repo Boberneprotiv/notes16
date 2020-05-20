@@ -1,11 +1,9 @@
 package content
 
 import (
-	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"path"
 	"regexp"
-	"strings"
 )
 
 type Post struct {
@@ -17,24 +15,17 @@ type Post struct {
 }
 
 func (s *Site) GetPost(file string) (*Post, error) {
-	p := path.Join(s.ContentRoot, file)
-	b, _ := ioutil.ReadFile(p)
-	content := string(b)
-
-	re := regexp.MustCompile(`(?s)---(.*?)---`)
-	rawMeta := re.FindStringSubmatch(content)[0]
-
-	var meta map[string]interface{}
-	if err := yaml.Unmarshal([]byte(strings.Trim(rawMeta, "---")), &meta); err != nil {
+	post, err := openPost(path.Join(s.ContentRoot, file))
+	if err != nil {
 		return nil, err
 	}
 
 	return &Post{
 		Name:        "file",
 		Path:        file,
-		Content:     strings.TrimPrefix(content, rawMeta),
-		Title:       meta["title"].(string),
-		Description: meta["description"].(string),
+		Content:     string(post.Content),
+		Title:       post.FrontMatter["title"].(string),
+		Description: post.FrontMatter["description"].(string),
 	}, nil
 }
 

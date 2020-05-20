@@ -1,7 +1,9 @@
 package content
 
 import (
+	"github.com/gohugoio/hugo/parser/pageparser"
 	"io/ioutil"
+	"os"
 	"path"
 	"regexp"
 	"strings"
@@ -48,4 +50,16 @@ func relativeFileName(contentRoot string, absFN string) string {
 func isCategory(fileName string) bool {
 	r, _ := regexp.MatchString(`(?m)_index(\.ua)?\.md`, fileName)
 	return r
+}
+
+func openPost(absPostPath string) (*pageparser.ContentFrontMatter, error) {
+	f, err := os.Open(absPostPath)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	rawPage, err := pageparser.ParseFrontMatterAndContent(f)
+
+	return &rawPage, err
 }
