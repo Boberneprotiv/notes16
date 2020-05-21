@@ -1,9 +1,9 @@
 {{ define "category-list" }}
     <ul>
-        {{ range .Files }}
+        {{ range .Pages }}
             <li>
-                <a href="/post?file={{ .Path }}">{{ .Name }}</a>
-                {{ if .IsCatalog}}
+                <a href="post?path={{ .Path }}">{{ .Title }}</a>
+                {{ if ne (len .Pages) 0 }}
                     {{ template "category-list" . }}
                 {{ end }}
             </li>

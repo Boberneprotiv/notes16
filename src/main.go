@@ -1,7 +1,9 @@
 package main
 
 import (
-	"github.com/boberneprotiv/notes16/src/content"
+	"github.com/gohugoio/hugo/commands"
+	"github.com/gohugoio/hugo/hugolib"
+	"github.com/gohugoio/hugo/resources/page"
 	"html/template"
 	"log"
 	"net/http"
@@ -12,11 +14,18 @@ import (
 var (
 	currentDir, _ = os.Getwd()
 	siteFolder    = path.Join(currentDir, "examples", "blog")
-	site, _       = content.NewSite(siteFolder)
 	templates     = template.Must(template.ParseFiles("templates/index.html", "templates/post.html", "templates/head.html", "templates/category-list.html"))
 )
 
+var s *hugolib.HugoSites
+
 func main() {
+	resp := commands.Execute([]string{"-s", siteFolder})
+	if resp.Err != nil {
+		log.Fatal(resp.Err.Error())
+	}
+	s = resp.Result
+
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/post", postHandler)
 	log.Println("Listening...")
@@ -25,10 +34,14 @@ func main() {
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		if c, err := site.GetCatalog(); err != nil {
-			log.Println(err.Error())
-			http.Error(w, http.StatusText(500), 500)
-		} else if err := templates.ExecuteTemplate(w, "index", c); err != nil {
+		var home page.Page
+		pages := s.Site.Pages()
+		for _, p := range pages {
+			if p.IsHome() {
+				home = p
+			}
+		}
+		if err := templates.ExecuteTemplate(w, "index", home); err != nil {
 			log.Println(err.Error())
 			http.Error(w, http.StatusText(500), 500)
 		}
@@ -36,43 +49,20 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func postHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
-		getPostHandler(w, r)
-	} else {
-		postPostHandler(w, r)
-	}
+	getPostHandler(w, r)
 }
 
 func getPostHandler(w http.ResponseWriter, r *http.Request) {
-	file := r.URL.Query()["file"][0]
-
-	if p, err := site.GetPost(file); err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
-	} else if err := templates.ExecuteTemplate(w, "post", p); err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
-	}
-}
-
-func postPostHandler(w http.ResponseWriter, r *http.Request) {
-	if err := r.ParseForm(); err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
+	path := r.URL.Query()["path"][0]
+	var page page.Page
+	pages := s.Site.Pages()
+	for _, p := range pages {
+		if p.Path() == path {
+			page = p
+		}
 	}
 
-	file := r.Form.Get("path")
-	c := r.Form.Get("content")
-
-	if err := site.UpdatePost(file, c); err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
-	}
-
-	if p, err := site.GetPost(file); err != nil {
-		log.Println(err.Error())
-		http.Error(w, http.StatusText(500), 500)
-	} else if err := templates.ExecuteTemplate(w, "post", p); err != nil {
+	if err := templates.ExecuteTemplate(w, "post", page); err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
 	}

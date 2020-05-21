@@ -3,6 +3,7 @@
     <html lang="en">
     {{ template "head" . }}
     <body>
+    <a href="post?path={{ .Path }}">{{ .Title }}</a>
     {{ template "category-list" . }}
     </body>
     </html>
