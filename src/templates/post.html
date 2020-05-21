@@ -3,18 +3,30 @@
     <html lang="en">
     {{ template "head" . }}
     <body>
-    <p><a href="/">Back to Catalog</a></p>
-    <form method="post" action="post">
-        <button type="submit">Save changes</button>
-        <input type="hidden" name="path" value="{{ .Path }}">
-        <div>
-            <input style="width: 100%" type="text" name="title" value="{{ .Title }}" />
+
+    <form class="container" method="post" action="post">
+        <div class="row">
+            <div class="col-6"><a href="/">Back to Catalog</a></div>
+            <div class="col-6 text-right"><a href="/">
+                    <button class="btn btn-primary" type="submit">Save changes</button></a>
+            </div>
         </div>
-        <textarea name="description" style="width: 100%; height: 200px">{{ .Description }}</textarea>
-        <textarea id="editor" name="content" style="width: 100%; height: 500px">{{ .Content }}</textarea>
+        <input type="hidden" name="path" value="{{ .Path }}">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ .Title }}">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3">{{ .Description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content" name="content">{{ .Content }}</textarea>
+        </div>
     </form>
     <script>
-        var simplemde = new SimpleMDE({ element: document.getElementById("editor") });
+        var simplemde = new SimpleMDE({ element: document.getElementById("content") });
     </script>
     </body>
     </html>
