@@ -5,12 +5,15 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
+	"path"
 )
 
 var (
-	siteFolder = "/Users/vladimirborodin/Documents/Avtodoctor/HugoSite"
-	site, _    = content.NewSite(siteFolder)
-	templates  = template.Must(template.ParseFiles("templates/index.html", "templates/post.html", "templates/head.html", "templates/category-list.html"))
+	currentDir, _ = os.Getwd()
+	siteFolder    = path.Join(currentDir, "examples", "blog")
+	site, _       = content.NewSite(siteFolder)
+	templates     = template.Must(template.ParseFiles("templates/index.html", "templates/post.html", "templates/head.html", "templates/category-list.html"))
 )
 
 func main() {
