@@ -12,6 +12,7 @@ type Post struct {
 	Content     string
 	Title       string
 	Description string
+	FrontMatter map[string]interface{}
 }
 
 func (s *Site) GetPost(file string) (*Post, error) {
@@ -20,12 +21,19 @@ func (s *Site) GetPost(file string) (*Post, error) {
 		return nil, err
 	}
 
+	title := post.FrontMatter["title"].(string)
+	description := post.FrontMatter["description"].(string)
+
+	delete(post.FrontMatter, "title")
+	delete(post.FrontMatter, "description")
+
 	return &Post{
 		Name:        "file",
 		Path:        file,
 		Content:     string(post.Content),
-		Title:       post.FrontMatter["title"].(string),
-		Description: post.FrontMatter["description"].(string),
+		Title:       title,
+		Description: description,
+		FrontMatter: post.FrontMatter,
 	}, nil
 }
 

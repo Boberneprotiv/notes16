@@ -20,6 +20,12 @@
             <label for="description">Description</label>
             <textarea class="form-control" id="description" name="description" rows="3">{{ .Description }}</textarea>
         </div>
+        {{ range $key, $element := .FrontMatter }}
+            <div class="form-group">
+                <label for="title">{{ $key }}</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ $element }}">
+            </div>
+        {{ end }}
         <div class="form-group">
             <label for="content">Content</label>
             <textarea id="content" name="content">{{ .Content }}</textarea>
