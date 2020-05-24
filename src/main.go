@@ -101,6 +101,12 @@ func postPostHandler(w http.ResponseWriter, r *http.Request) {
 
 	err := overwritePage(c, page)
 	reinit()
+	pages = s.Site.Pages()
+	for _, p := range pages {
+		if p.Path() == path {
+			page = p
+		}
+	}
 	if err != nil {
 		log.Println(err.Error())
 		http.Error(w, http.StatusText(500), 500)
