@@ -4,9 +4,10 @@
     {{ template "head" . }}
     <body>
 
-    <form class="container" method="post" action="post">
+    <form class="container" method="post" action="post?path={{ .Path }}">
         <div class="row">
-            <div class="col-12"><a href="/">Back to Catalog</a></div>
+            <div class="col-6"><a href="/">Back to Catalog</a></div>
+            <div class="col-6 text-right"><button type="submit" class="btn btn-primary">Save</button></div>
         </div>
         <input type="hidden" name="path" value="{{ .Path }}">
         <div class="form-group">
