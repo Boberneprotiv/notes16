@@ -1,0 +1,28 @@
+{{ define "index" }}
+    <!DOCTYPE html>
+    <html lang="en">
+    {{ template "head" . }}
+    <body>
+    <div class="container">
+        <table class="table">
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+            </tr>
+            {{ range .RegularPages }}
+                <tr>
+                    <td><a href="post?path={{ .Path }}">{{ .Title }}</a></td>
+                    <td>
+                        {{ if .CurrentSection.Section }}
+                            {{ .CurrentSection.Title }}
+                        {{ else }}
+                            -
+                        {{ end }}
+                    </td>
+                </tr>
+            {{ end }}
+        </table>
+    </div>
+    </body>
+    </html>
+{{ end }}

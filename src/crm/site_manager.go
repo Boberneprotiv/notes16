@@ -35,14 +35,8 @@ func NewSiteManager(absPath string) (*SiteManager, error) {
 	}
 }
 
-func (s *SiteManager) GetHomePage() *page.Page {
-	for _, p := range s.hugo.Site.Pages() {
-		if p.IsHome() {
-			return &p
-		}
-	}
-
-	return nil
+func (s *SiteManager) GetSite() page.Site {
+	return s.hugo.Site
 }
 
 func (s *SiteManager) UpdatePageByPath(path string, content string, fm *FrontMatter) (*page.Page, error) {
@@ -82,11 +76,15 @@ func (s *SiteManager) UpdatePageByPath(path string, content string, fm *FrontMat
 
 	newContent.Write(pf.Content)
 
-	err = ioutil.WriteFile(p.File().Filename(), newContent.Bytes(), 0644)
+	if err = ioutil.WriteFile(p.File().Filename(), newContent.Bytes(), 0644); err != nil {
+		return nil, err
+	}
 
-	s.initialize()
+	if err = s.initialize(); err != nil {
+		return nil, err
+	}
 
-	return s.GetPageByPath(path), err
+	return s.GetPageByPath(path), nil
 }
 
 func (s *SiteManager) GetPageByPath(path string) *page.Page {
