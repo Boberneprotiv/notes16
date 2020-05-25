@@ -1,0 +1,12 @@
+{{ define "section-item" }}
+<a href="post?path={{ .Path }}">{{ .Title }}</a>
+{{ if .Sections }}
+    <ul>
+        {{ range .Sections }}
+        <li>
+            {{ template "section-item" . }}
+        </li>
+        {{ end }}
+    </ul>
+{{ end }}
+{{ end }}

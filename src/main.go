@@ -12,7 +12,8 @@ import (
 var (
 	currentDir, _ = os.Getwd()
 	siteFolder    = path.Join(currentDir, "examples", "blog")
-	templates     = template.Must(template.ParseFiles("templates/publications.html", "templates/publication.html", "templates/head.html"))
+	templates     = template.Must(template.ParseFiles("templates/publications.html", "templates/publication.html",
+		"templates/sections.html", "templates/section-item.html", "templates/head.html"))
 )
 
 var sm *crm.SiteManager
@@ -27,6 +28,7 @@ func main() {
 
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/post", postHandler)
+	http.HandleFunc("/section", categoriesHandler)
 	log.Println("Listening...")
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }
@@ -35,6 +37,16 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		pages := sm.GetSite()
 		if err := templates.ExecuteTemplate(w, "index", pages); err != nil {
+			log.Println(err.Error())
+			http.Error(w, http.StatusText(500), 500)
+		}
+	}
+}
+
+func categoriesHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		pages := sm.GetSite()
+		if err := templates.ExecuteTemplate(w, "sections", pages); err != nil {
 			log.Println(err.Error())
 			http.Error(w, http.StatusText(500), 500)
 		}
