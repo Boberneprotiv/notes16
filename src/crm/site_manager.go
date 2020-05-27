@@ -11,6 +11,7 @@ import (
 	"github.com/gohugoio/hugo/resources/page"
 	"io/ioutil"
 	"os"
+	"path"
 	"time"
 )
 
@@ -95,6 +96,14 @@ func (s *SiteManager) GetPageByPath(path string) *page.Page {
 	}
 
 	return nil
+}
+
+func (s *SiteManager) CreateSection(p string, name string) error {
+	resp := commands.Execute([]string{"new", "-s", s.absPath, path.Join(p, name, "_index.md")})
+	if resp.Err != nil {
+		return resp.Err
+	}
+	return s.initialize()
 }
 
 func (s *SiteManager) initialize() error {

@@ -50,6 +50,26 @@ func categoriesHandler(w http.ResponseWriter, r *http.Request) {
 			log.Println(err.Error())
 			http.Error(w, http.StatusText(500), 500)
 		}
+	} else {
+		err := r.ParseForm()
+		if err != nil {
+			log.Println(err.Error())
+			http.Error(w, http.StatusText(500), 500)
+		}
+
+		name := r.Form["name"][0]
+
+		if err = sm.CreateSection("", name); err != nil {
+			log.Println(err.Error())
+			http.Error(w, http.StatusText(500), 500)
+		}
+
+		pages := sm.GetSite()
+
+		if err := templates.ExecuteTemplate(w, "sections", pages); err != nil {
+			log.Println(err.Error())
+			http.Error(w, http.StatusText(500), 500)
+		}
 	}
 }
 

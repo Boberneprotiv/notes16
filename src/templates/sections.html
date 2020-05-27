@@ -4,6 +4,11 @@
     {{ template "head" . }}
     <body>
     <div class="container">
+        <form class="form-inline" action="section" method="post">
+            <label class="sr-only" for="sectionName">Section</label>
+            <input type="text" class="form-control mb-2 mr-sm-2" id="sectionName" name="name" required placeholder="Section Name">
+            <button type="submit" class="btn btn-primary mb-2">Create</button>
+        </form>
         {{ template "section-item" .Home }}
     </div>
     </body>
