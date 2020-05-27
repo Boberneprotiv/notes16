@@ -12,9 +12,9 @@ import (
 var (
 	currentDir, _ = os.Getwd()
 	siteFolder    = path.Join(currentDir, "examples", "blog")
-	templates     = template.Must(template.ParseFiles("templates/publications.html", "templates/publication.html",
-		"templates/sections.html", "templates/section-item.html", "templates/head.html",
-		"templates/navigation.html"))
+	templates     = template.Must(template.ParseFiles(
+		"templates/components/section-item.html", "templates/components/head.html", "templates/components/navigation.html",
+		"templates/pages/publications.html", "templates/pages/publication.html", "templates/pages/sections.html"))
 )
 
 var sm *crm.SiteManager
