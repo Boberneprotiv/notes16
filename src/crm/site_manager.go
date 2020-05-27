@@ -12,6 +12,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path"
+	"strings"
 	"time"
 )
 
@@ -98,7 +99,8 @@ func (s *SiteManager) GetPageByPath(path string) *page.Page {
 	return nil
 }
 
-func (s *SiteManager) CreateSection(p string, name string) error {
+func (s *SiteManager) CreateSection(parent string, name string) error {
+	p := strings.TrimSuffix(parent, "_index.md")
 	resp := commands.Execute([]string{"new", "-s", s.absPath, path.Join(p, name, "_index.md")})
 	if resp.Err != nil {
 		return resp.Err

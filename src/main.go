@@ -58,8 +58,9 @@ func categoriesHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		name := r.Form["name"][0]
+		p := r.Form["path"][0]
 
-		if err = sm.CreateSection("", name); err != nil {
+		if err = sm.CreateSection(p, name); err != nil {
 			log.Println(err.Error())
 			http.Error(w, http.StatusText(500), 500)
 		}
