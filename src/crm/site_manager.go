@@ -98,7 +98,7 @@ func (s *SiteManager) GetPageByPath(path string) *page.Page {
 }
 
 func (s *SiteManager) initialize() error {
-	resp := commands.Execute([]string{"-s", s.absPath})
+	resp := commands.Execute([]string{"-DEF", "-s", s.absPath})
 	if resp.Err != nil {
 		return resp.Err
 	}
