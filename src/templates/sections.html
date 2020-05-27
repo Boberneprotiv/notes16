@@ -4,8 +4,9 @@
     {{ template "head" . }}
     <body>
     <div class="container">
+        {{ template "navigation" . }}
         <form class="form-inline" action="section" method="post">
-            <select class="form-control  mb-2 mr-sm-2" name="path">
+            <select class="form-control mb-2 mr-sm-2" name="path">
                 <option value="">No parent section</option>
                 {{ range .Sections }}
                     <option value="{{ .Path }}">{{ .Title }}</option>

@@ -13,7 +13,8 @@ var (
 	currentDir, _ = os.Getwd()
 	siteFolder    = path.Join(currentDir, "examples", "blog")
 	templates     = template.Must(template.ParseFiles("templates/publications.html", "templates/publication.html",
-		"templates/sections.html", "templates/section-item.html", "templates/head.html"))
+		"templates/sections.html", "templates/section-item.html", "templates/head.html",
+		"templates/navigation.html"))
 )
 
 var sm *crm.SiteManager
