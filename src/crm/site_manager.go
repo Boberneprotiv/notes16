@@ -41,8 +41,8 @@ func (s *SiteManager) GetSite() page.Site {
 	return s.hugo.Site
 }
 
-func (s *SiteManager) UpdatePageByPath(path string, content string, fm *FrontMatter) (*page.Page, error) {
-	p := *s.GetPageByPath(path)
+func (s *SiteManager) UpdatePageById(id string, content string, fm *FrontMatter) (*page.Page, error) {
+	p := *s.GetPageById(id)
 	if p == nil {
 		return nil, errors.New("page not found")
 	}
@@ -86,12 +86,12 @@ func (s *SiteManager) UpdatePageByPath(path string, content string, fm *FrontMat
 		return nil, err
 	}
 
-	return s.GetPageByPath(path), nil
+	return s.GetPageById(id), nil
 }
 
-func (s *SiteManager) GetPageByPath(path string) *page.Page {
+func (s *SiteManager) GetPageById(id string) *page.Page {
 	for _, p := range s.hugo.Site.Pages() {
-		if p.Path() == path {
+		if p.Path() == id {
 			return &p
 		}
 	}

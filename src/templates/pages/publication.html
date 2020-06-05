@@ -6,7 +6,7 @@
 
     <div class="container">
         {{ template "navigation" . }}
-        <form method="post" action="post?path={{ .Path }}">
+        <form method="post" action="/content/publication/{{ .Path | escape }}/update">
             <div class="row">
                 <div class="col-6"><h1>{{ .Title }}</h1></div>
                 <div class="col-6 text-right"><button type="submit" class="btn btn-primary">Save</button></div>

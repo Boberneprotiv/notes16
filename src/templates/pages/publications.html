@@ -12,7 +12,7 @@
             </tr>
             {{ range .RegularPages }}
                 <tr>
-                    <td><a href="post?path={{ .Path }}">{{ .Title }}</a></td>
+                    <td><a href="/content/publication/{{ .Path | escape }}">{{ .Title }}</a></td>
                     <td>
                         {{ if .CurrentSection.Section }}
                             {{ .CurrentSection.Title }}
